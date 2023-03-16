@@ -1,0 +1,87 @@
+{% extends "master.html" %}
+
+{% block title %}
+    Weather Home
+{% endblock %}
+
+{% block content %}
+
+<h1>City Look Up</h1>
+
+<!-- Form -->
+<form method="post"> {% csrf_token %}
+    <div class="form-group">
+        <label for="city">City*:</label>
+        <input type="text" class="form-control" id = "city" name="city" value="{{ request.POST.city }}">
+    </div>
+    <div class="form-group">
+        <label for="state">State:</label>
+        <input type="text" class="form-control" id = "state" name="state" value="{{ request.POST.state }}">
+    </div>
+    <div class="form-group">
+        <label for="country">Country**:</label>
+        <input type="text" class="form-control" id = "country" name="country" value="{{ request.POST.country }}">
+    </div>
+    <div class="form-group">
+        <label for="zip">Zip Code**:</label>
+        <input type="text" class="form-control" id = "zip" name="zip" value="{{ request.POST.zip }}">
+    </div>
+    <br>
+    <p>*You need to enter at least "City" or "Zip Code"</p>
+    <p>**You also need "Country" code when you choose "Zip Code"</p>
+    <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+<br>
+
+<!-- Table -->
+<table class="table table-striped">
+    <!-- If "city" is entered -->
+    {% if request.POST.city %}
+    <tr>
+        <th></th>
+        <th>City</th>
+        <th>State</th>
+        <th>Country</th>
+        <th>Lat</th>
+        <th>Lon</th>
+    </tr>
+    <!-- Show data in the table form -->
+    {% for x in data %}
+    <tr>
+        <td><a href="{% url 'current' x.lat x.lon %}">Get Conditions</a></td>
+        <td>{{x.name}}</td>
+        <td>{{x.state}}</td>
+        <td>{{x.country}}</td>
+        <td>{{x.lat}}</td>
+        <td>{{x.lon}}</td>
+    </tr>
+    {% endfor %}
+    {% elif request.POST.zip %}
+    <!-- If "zip" is entered -->
+    <tr>
+        <th></th>
+        <th>Zip</th>
+        <th>City</th>
+        <th>Lat</th>
+        <th>Lon</th>
+        <th>Country</th>
+    </tr>
+    <!-- Show data in the table form -->
+    <tr>
+        <td><a href="{% url 'current' lat=data.lat lon=data.lon %}">Get Conditions</a></td>
+        <td>{{data.zip}}</td>
+        <td>{{data.name}}</td>
+        <td>{{data.lat}}</td>
+        <td>{{data.lon}}</td>
+        <td>{{data.country}}</td>
+    </tr>
+    {% endif %}
+
+</table>
+
+{% endblock %}
+
+{% block footer %}
+<div style="text-align: center;">Footer</div>
+{% endblock %}

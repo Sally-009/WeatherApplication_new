@@ -1,0 +1,60 @@
+{% extends "master.html" %}
+{% block title %}
+    Current Conditions
+{% endblock %}
+
+{% block content %}
+
+<h1>Lat: {{lat}}, Lon: {{lon}}</h1>
+<h2>Current Conditions</h2>
+
+<br>
+
+<!-- Show current weather data -->
+<table class="table table-striped">
+    <tr>
+        <th>Icon</th>
+        <th>Weather</th>
+        <th>Temperature</th>
+        <th>Minimum Temp.</th>
+        <th>Maximum Temp.</th>
+        <th>Humidity</th>
+    </tr>
+    <tr>
+        <td><img src="http://openweathermap.org/img/w/{{ icon }}.png" alt="icon"></td>
+        <td>{{c_weather}}</td>
+        <td>{{main.temp}} &#8457;</td>
+        <td>{{main.temp_min}} &#8457;</td>
+        <td>{{main.temp_max}} &#8457;</td>
+        <td>{{main.humidity}} &#37;</td>
+    </tr>
+</table>
+
+<h2>5-day Forecast</h2>
+
+<!-- Show forecast data -->
+<table class="table table-striped">
+    <tr>
+        <th>Time</th>
+        <th>Icon</th>
+        <th>Weather</th>
+        <th>Minimum Temp.</th>
+        <th>Maximum Temp.</th>
+        <th>Humidity</th>
+    </tr>
+    {% for x in f_weather %}
+    <tr>
+        <td>{{x.date}}</td>
+        <td><img src="http://openweathermap.org/img/w/{{ x.icon }}.png" alt="icon"></td>
+        <td>{{x.main}}</td>
+        <td>{{x.min_temp}} &#8457;</td>
+        <td>{{x.max_temp}} &#8457;</td>
+        <td>{{x.humidity}} &#37;</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<!-- Footer -->
+<a href="{% url 'index' %}">Go Back</a>
+
+{% endblock %}
